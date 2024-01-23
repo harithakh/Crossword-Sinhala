@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/puzzle_number_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="01"
+        tools:text="01" />
+
+    <androidx.gridlayout.widget.GridLayout
+        android:id="@+id/puzzle_grid_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="#252424"
+        android:padding="3dp"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/puzzle_number_textview"
+        app:columnCount="7"
+        app:rowCount="7">
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r1c1"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck" />
+
+            <TextView
+                android:id="@+id/tiny_text_1_1"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+            <EditText
+                android:id="@+id/r1c2"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_1_2"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r1c3"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_1_3"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r1c4"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_1_4"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r1c5"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_1_5"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r1c6"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_1_6"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r1c7"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_1_7"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r2c1"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_2_1"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r2c2"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_2_2"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r2c3"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_2_3"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r2c4"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_2_4"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r2c5"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_2_5"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r2c6"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_2_6"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r2c7"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_2_7"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r3c1"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_3_1"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r3c2"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_3_2"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r3c3"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_3_3"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r3c4"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_3_4"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r3c5"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_3_5"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r3c6"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_3_6"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r3c7"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_3_7"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r4c1"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_4_1"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r4c2"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_4_2"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r4c3"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_4_3"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r4c4"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_4_4"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r4c5"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_4_5"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r4c6"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_4_6"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r4c7"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_4_7"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r5c1"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_5_1"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r5c2"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_5_2"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r5c3"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_5_3"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r5c4"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_5_4"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r5c5"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_5_5"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r5c6"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_5_6"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r5c7"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_5_7"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r6c1"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_6_1"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r6c2"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_6_2"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r6c3"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_6_3"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r6c4"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_6_4"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r6c5"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_6_5"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r6c6"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_6_6"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r6c7"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_6_7"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r7c1"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_7_1"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r7c2"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_7_2"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r7c3"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_7_3"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r7c4"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_7_4"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r7c5"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_7_5"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r7c6"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_7_6"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+        <RelativeLayout>
+
+            <EditText
+                android:id="@+id/r7c7"
+                style="@style/puzzle_box_style"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck"/>
+            <TextView
+                android:id="@+id/tiny_text_7_7"
+                style="@style/tiny_text_style"/>
+        </RelativeLayout>
+
+    </androidx.gridlayout.widget.GridLayout>
+
+    <LinearLayout
+        android:id="@+id/across_and_down_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_below="@+id/puzzle_grid_view">
+        <Button
+            android:id="@+id/across_button"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="5dp"
+            android:text="@string/across"/>
+        <Button
+            android:id="@+id/down_button"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="5dp"
+            android:text="@string/down"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/clues_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/across_and_down_buttons"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="5dp"
+        android:fadeScrollbars="false"
+        android:scrollbarThumbVertical="@color/cardview_dark_background"
+        tools:ignore="SpeakableTextPresentCheck">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp">
+
+            <TextView
+                android:id="@+id/clue_1"
+                style="@style/clue_textView_style"
+                tools:text="1) what are differences between these two feature 2.which one is best to use 3.What are there effect during ui rendering " />
+
+            <TextView
+                android:id="@+id/clue_2"
+                style="@style/clue_textView_style"
+                tools:text="2) is used only for Android Studio layout preview, it doesn't show text when you run an app" />
+
+            <TextView
+                android:id="@+id/clue_3"
+                style="@style/clue_textView_style"
+                tools:text="3) It's perfect, when you don't want to set a text until you do some calculations" />
+
+            <TextView
+                android:id="@+id/clue_4"
+                style="@style/clue_textView_style"
+                tools:text="4) textView or a button etc." />
+
+            <TextView
+                android:id="@+id/clue_5"
+                style="@style/clue_textView_style"
+                tools:text="5) That's not quite right" />
+
+            <TextView
+                android:id="@+id/clue_6"
+                style="@style/clue_textView_style"
+                tools:text="6) what are differences between these two feature 2.which one is best to use 3.What are there effect during ui rendering " />
+
+            <TextView
+                android:id="@+id/clue_7"
+                style="@style/clue_textView_style"
+                tools:text="7) is used only for Android Studio layout preview, it doesn't show text when you run an app" />
+
+            <TextView
+                android:id="@+id/clue_8"
+                style="@style/clue_textView_style"
+                tools:text="8) It's perfect, when you don't want to set a text until you do some calculations" />
+
+            <TextView
+                android:id="@+id/clue_9"
+                style="@style/clue_textView_style"
+                tools:text="9) textView or a button etc." />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/check_answers_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/clues_scrollView"
+        android:layout_marginHorizontal="10dp"
+        android:text="@string/check_answers" />
+
+</RelativeLayout>
