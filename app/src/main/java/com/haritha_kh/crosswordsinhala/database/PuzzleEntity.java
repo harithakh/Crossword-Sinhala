@@ -8,10 +8,11 @@ import androidx.room.PrimaryKey;
 public class PuzzleEntity {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     private int id;
 
     @ColumnInfo(name = "puzzle_id") //@ColumnInfo annotation in Room is optional
-    public long puzzleId;
+    public int puzzleId;
 
     @ColumnInfo(name = "row")
     public int row;
@@ -29,7 +30,7 @@ public class PuzzleEntity {
     public int hintLetter;
 
     // Constructor
-    public PuzzleEntity(long puzzleId, int row, int col, String letter, int indexNumber, int hintLetter) {
+    public PuzzleEntity(int puzzleId, int row, int col, String letter, int indexNumber, int hintLetter) {
         this.puzzleId = puzzleId;
         this.row = row;
         this.col = col;
@@ -39,4 +40,13 @@ public class PuzzleEntity {
     }
 
     // getters, setters can be added as needed later
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
