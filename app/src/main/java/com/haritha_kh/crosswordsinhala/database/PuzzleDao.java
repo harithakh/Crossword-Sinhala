@@ -8,7 +8,13 @@ import java.util.List;
 
 @Dao
 public interface PuzzleDao {
-    @Query("SELECT * FROM puzzles")
-    LiveData<List<PuzzleEntity>> getAll();
+    @Query("SELECT * FROM puzzles WHERE puzzle_id = :id")
+    LiveData<List<PuzzleEntity>> getPuzzleById(int id);
 
 }
+
+//@Dao
+//public interface PuzzleDao {
+//    @Query("SELECT * FROM puzzles WHERE puzzleId = :id")
+//    LiveData<List<PuzzleEntity>> getPuzzleById(int id);
+//}

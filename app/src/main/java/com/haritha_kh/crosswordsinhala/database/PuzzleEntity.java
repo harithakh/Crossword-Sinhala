@@ -14,26 +14,22 @@ public class PuzzleEntity {
     @ColumnInfo(name = "puzzle_id") //@ColumnInfo annotation in Room is optional
     public int puzzleId;
 
-    @ColumnInfo(name = "row")
-    public int row;
-
-    @ColumnInfo(name = "col")
-    public int col;
+    @ColumnInfo(name = "box_number")
+    public int boxNumber;
 
     @ColumnInfo(name = "letter")
-    public String letter;
+    private final String letter;
 
     @ColumnInfo(name = "index_number")
     public int indexNumber;
 
-    @ColumnInfo(name = "hint_letter", defaultValue = "0")
-    public int hintLetter;
+    @ColumnInfo(name = "hint_letter")
+    private final int hintLetter;
 
     // Constructor
-    public PuzzleEntity(int puzzleId, int row, int col, String letter, int indexNumber, int hintLetter) {
+    public PuzzleEntity(int puzzleId, int boxNumber, String letter, int indexNumber, int hintLetter) {
         this.puzzleId = puzzleId;
-        this.row = row;
-        this.col = col;
+        this.boxNumber = boxNumber;
         this.letter = letter;
         this.indexNumber = indexNumber;
         this.hintLetter = hintLetter;
@@ -49,4 +45,19 @@ public class PuzzleEntity {
     public void setId(int id) {
         this.id = id;
     }
+
+
+    public String getLetter() {
+        return letter;
+    }
+
+    public int getHintLetter() {
+        return hintLetter;
+    }
+
+
+    public int getIndexNumber() {
+        return indexNumber;
+    }
+
 }
