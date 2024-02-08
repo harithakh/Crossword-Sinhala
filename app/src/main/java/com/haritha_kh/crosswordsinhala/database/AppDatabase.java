@@ -6,11 +6,12 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {PuzzleEntity.class}, version = 1)
+@Database(entities = {PuzzleEntity.class, ClueEntity.class}, version = 1)
 //version number should be updated when the Room Database schema is changed, such as adding new tables.
 public abstract class AppDatabase extends RoomDatabase{
 
     public abstract PuzzleDao puzzleDao();
+    public abstract ClueDao clueDao();
 
     private static volatile AppDatabase instance;
 

@@ -21,7 +21,7 @@ public class PuzzleEntity {
     private final String letter;
 
     @ColumnInfo(name = "index_number")
-    public int indexNumber;
+    private final int indexNumber;
 
     @ColumnInfo(name = "hint_letter")
     private final int hintLetter;

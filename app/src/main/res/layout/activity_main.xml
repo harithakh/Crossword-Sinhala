@@ -8,6 +8,11 @@
     android:gravity="center"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/level_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <Button
         android:id="@+id/b_0001"
         android:layout_width="wrap_content"

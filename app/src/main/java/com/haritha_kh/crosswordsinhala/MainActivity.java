@@ -2,10 +2,13 @@ package com.haritha_kh.crosswordsinhala;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,4 +37,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, SolvePuzzle.class)
                 .putExtra("puzzle_number",buttonNumber));
     }
-}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        int completedLevels = sharedPreferences.getInt("completedLevels", 0); // Default value is 0
+
+        TextView textView = findViewById(R.id.level_no);
+        textView.setText(String.valueOf(completedLevels));
+    }
+    }

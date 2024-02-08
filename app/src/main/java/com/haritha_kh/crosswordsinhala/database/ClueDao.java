@@ -7,8 +7,8 @@ import androidx.room.Query;
 import java.util.List;
 
 @Dao
-public interface PuzzleDao {
-    @Query("SELECT * FROM puzzles WHERE puzzle_id = :id")
-    LiveData<List<PuzzleEntity>> getPuzzleById(int id);
+public interface ClueDao {
 
+    @Query("SELECT * FROM clues WHERE puzzle_id = :id")
+    LiveData<List<ClueEntity>> getClueById(int id);
 }
