@@ -27,7 +27,7 @@ import java.util.List;
 public class SolvePuzzle extends AppCompatActivity{
 
     private int puzzleNumber;
-    private int levelNumber;
+    private int nextLevel = 0;
     private LiveData<List<PuzzleEntity>> lettersData;
     private LiveData<List<ClueEntity>> cluesData;
     TextView[][] indexNumbers = new TextView[7][7];
@@ -46,25 +46,25 @@ public class SolvePuzzle extends AppCompatActivity{
         }
 
         puzzleNumber = getIntent().getIntExtra("puzzle_number",0);
-        levelNumber = puzzleNumber;
+//        levelNumber = puzzleNumber;
 
         TextView puzzleNumberTextview = findViewById(R.id.puzzle_number_textview);
         puzzleNumberTextview.setText(String.valueOf(puzzleNumber));
 
         AppDatabase db = AppDatabase.getInstance(this);
-        lettersData = db.puzzleDao().getPuzzleById(1); // the puzzle id that passes from the menu must come here. puzzleNumber
-        cluesData = db.clueDao().getClueById(1);
+        lettersData = db.puzzleDao().getPuzzleById(puzzleNumber);
+        cluesData = db.clueDao().getClueById(puzzleNumber);
 
 
         observeOnce(lettersData, this, newValue -> {
 //            tvr1c1.setText(newValue.get(0).getLetter());
             setLetters(newValue);
-            Log.d("Data from database", "check it working " + newValue.get(0).getLetter());
+//            Log.d("Data from database", "check it working " + newValue.get(0).getLetter());
         });
 
         observeOnce(cluesData, this, newValue -> {
             setClues(newValue);
-            Log.d("Data from database", "check it working " + newValue.get(0).getClue());
+//            Log.d("Data from database", "check it working " + newValue.get(0).getClue());
         });
 
     }
@@ -74,10 +74,15 @@ public class SolvePuzzle extends AppCompatActivity{
         super.onPause();
 
         SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putInt("completedLevels", levelNumber);
-        editor.apply();
+        // If the level is completed for the first time, this if condition executes
+        if (puzzleNumber == sharedPreferences.getInt("completedLevel", 0) + 1 &&
+                nextLevel != 0 ) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("completedLevel", nextLevel);
+            editor.apply();
+        }
+
     }
 
     // This method is for observing data once and then automatically removing the observer.
@@ -118,7 +123,7 @@ public class SolvePuzzle extends AppCompatActivity{
         MakePuzzle makePuzzle = new MakePuzzle();
         makePuzzle.puzzleMaker(letterEditTexts, indexNumbers, box);
 
-        //if all the answers are correct, should be able to go the next puzzle
+        //checking the answers. if all the answers are correct, can to go the next puzzle
         checkAnswers.setOnClickListener(new View.OnClickListener() {
             private boolean isLevelCompleted;
             @Override
@@ -126,22 +131,53 @@ public class SolvePuzzle extends AppCompatActivity{
                 for (int i = 0; i < 7; i++) {
                     for (int j = 0; j < 7; j++) {
                         String letterDatabase = box.get((i*7)+j).getLetter(); //letter from db
+
                         if(letterDatabase!=null){
-                            userInput[i][j] = letterEditTexts[i][j].getText().toString();
+
+                            String editTextInput = letterEditTexts[i][j].getText().toString().trim();
+                            // userInput string must be used later to save data on SharedPreferences.
+                            userInput[i][j] = editTextInput;
+
                             letterEditTexts[i][j].setBackgroundColor(Color.WHITE);
-                            if(!(letterEditTexts[i][j].getText().toString().equals(letterDatabase))){
+
+                            // check other_letters from the database
+                            String[] otherLetters;
+                            boolean isOtherLettersMatches = false;
+                            if (box.get((i*7)+j).getOtherLetters() != null) {
+                                otherLetters = box.get((i*7)+j).getOtherLetters().split(",");
+
+                                //check if the answers matches with other letters
+                                for(String str : otherLetters){
+                                    if (editTextInput.equals(str)) {
+                                        isOtherLettersMatches = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (editTextInput.equals(letterDatabase)){
+                                isLevelCompleted = true;
+                            } else if (isOtherLettersMatches){
+                                letterEditTexts[i][j].setText(letterDatabase);
+                                isLevelCompleted = true;
+                            } else {
                                 //set editText red if the user answer is wrong
                                 letterEditTexts[i][j].setBackgroundColor(Color.RED);
-                            }else{
-                                isLevelCompleted = true;
                             }
                         }
                     }
                 }
                 //if all the answers are correct,level number increases by 1
                 if (isLevelCompleted) {
-                    levelNumber += 1;
-                    letterEditTexts[0][0].setText(String.valueOf(levelNumber));
+                    nextLevel = puzzleNumber + 1;
+
+                    SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+
+                    if (puzzleNumber == sharedPreferences.getInt("next_level", 1)){
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt("next_level", nextLevel);
+                        editor.apply();
+                    }
                 }
             }
         });

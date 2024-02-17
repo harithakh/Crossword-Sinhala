@@ -12,7 +12,7 @@ public class MakePuzzle {
 
     public void puzzleMaker(EditText[][] editTexts, TextView[][] textViews, List<PuzzleEntity> box){
 
-//        assigning the data taken from the database to the EditTexts and the TextViews.
+//      placing data taken from the database to the EditTexts and the TextViews.
         for(int i=0; i<7; i++){
             for(int j=0; j<7; j++){
                 String letter = box.get((i*7)+j).getLetter();

@@ -16,7 +16,6 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:text="01"
         tools:text="01" />
 
     <androidx.gridlayout.widget.GridLayout
@@ -603,7 +602,7 @@
     <ScrollView
         android:id="@+id/clues_scrollView"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:layout_below="@+id/across_and_down_buttons"
         android:layout_gravity="bottom"
         android:layout_marginHorizontal="5dp"
@@ -616,8 +615,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="10dp">
-        </LinearLayout>
+            android:paddingHorizontal="10dp"/>
     </ScrollView>
 
     <Button

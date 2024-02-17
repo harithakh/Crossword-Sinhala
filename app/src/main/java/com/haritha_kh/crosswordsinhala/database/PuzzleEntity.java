@@ -20,6 +20,9 @@ public class PuzzleEntity {
     @ColumnInfo(name = "letter")
     private final String letter;
 
+    @ColumnInfo(name = "other_letters")
+    private final String otherLetters;
+
     @ColumnInfo(name = "index_number")
     private final int indexNumber;
 
@@ -27,10 +30,11 @@ public class PuzzleEntity {
     private final int hintLetter;
 
     // Constructor
-    public PuzzleEntity(int puzzleId, int boxNumber, String letter, int indexNumber, int hintLetter) {
+    public PuzzleEntity(int puzzleId, int boxNumber, String letter, String otherLetters, int indexNumber, int hintLetter) {
         this.puzzleId = puzzleId;
         this.boxNumber = boxNumber;
         this.letter = letter;
+        this.otherLetters = otherLetters;
         this.indexNumber = indexNumber;
         this.hintLetter = hintLetter;
     }
@@ -49,6 +53,10 @@ public class PuzzleEntity {
 
     public String getLetter() {
         return letter;
+    }
+
+    public String getOtherLetters(){
+        return otherLetters;
     }
 
     public int getHintLetter() {
