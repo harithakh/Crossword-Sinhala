@@ -16,6 +16,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/black"
+        android:visibility="gone"
         tools:text="01" />
 
     <androidx.gridlayout.widget.GridLayout
@@ -24,8 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:background="#252424"
-        android:padding="3dp"
-        android:layout_margin="5dp"
+        android:padding="1dp"
+        android:layout_marginTop="3dp"
         android:layout_below="@+id/puzzle_number_textview"
         app:columnCount="7"
         app:rowCount="7">

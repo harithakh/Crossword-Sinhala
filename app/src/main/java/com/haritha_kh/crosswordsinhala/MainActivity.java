@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +19,16 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private final List<Button> buttonList = new ArrayList<>();
+    private SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
-        int completedLevels = sharedPreferences.getInt("next_level", 1);
+        sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        int nextLevel = sharedPreferences.getInt("next_level", 1);
 
-        makeButtons(completedLevels,13);
+        makeButtons(nextLevel,60); //total must update
 
     }
 
@@ -35,15 +37,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // when a level completed and user comes back to this page, the active buttons will be updated.
-        SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
-        int completedLevels = sharedPreferences.getInt("next_level", 1);
+        int nextLevel = sharedPreferences.getInt("next_level", 1);
 
-        TextView textView = findViewById(R.id.sharedFCheck);
-        textView.setText(String.valueOf(completedLevels));
+        TextView textView = findViewById(R.id.sharedFCheck); //test
+        textView.setText(String.valueOf(nextLevel));
 
         for (Button button : buttonList){
             int buttonNumber = buttonList.indexOf(button) + 1;
-            if (buttonNumber <= completedLevels){
+            if (buttonNumber <= nextLevel){
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         gridLayout.setColumnCount(numCols);
         int numRows = (int) Math.ceil((double) totalPuzzles / numCols);
+        gridLayout.setRowCount(numRows);
 
         int buttonStyle = R.style.menu_button_style;
 
@@ -69,7 +71,13 @@ public class MainActivity extends AppCompatActivity {
             int puzzleNumber = i;
             Button button = new Button(this);
             button.setText(String.valueOf(i));
+            button.setHeight(250);
+
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+//            params.width = 0; // Set width to 0 to let GridLayout manage the width
+//            params.height = 0;
+            params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f); // Set row weight to 1
+            params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
 
             if (puzzleNumber <= currentLevel) {
                 button.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 button.setEnabled(false);
             }
-            gridLayout.addView(button);
+            gridLayout.addView(button, params);
 
             buttonList.add(button);
 

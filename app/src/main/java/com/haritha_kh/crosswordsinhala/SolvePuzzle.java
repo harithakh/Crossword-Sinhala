@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,52 +21,85 @@ import android.widget.TextView;
 import com.haritha_kh.crosswordsinhala.database.AppDatabase;
 import com.haritha_kh.crosswordsinhala.database.ClueEntity;
 import com.haritha_kh.crosswordsinhala.database.PuzzleEntity;
+import com.haritha_kh.crosswordsinhala.utils.FormatString;
+import com.haritha_kh.crosswordsinhala.utils.MakePuzzle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SolvePuzzle extends AppCompatActivity{
 
     private int puzzleNumber;
     private int nextLevel = 0;
-    private LiveData<List<PuzzleEntity>> lettersData;
-    private LiveData<List<ClueEntity>> cluesData;
-    TextView[][] indexNumbers = new TextView[7][7];
+    TextView[][] indexNumberTextViews = new TextView[7][7];
     EditText[][] letterEditTexts = new EditText[7][7];
     String[][] userInput = new String[7][7];
+    FormatString formatString = new FormatString();
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solve_puzzle);
 
-        EditText tvr1c1 = findViewById(R.id.r1c1);
         // Hiding action bar
         if(getSupportActionBar()!=null){
             this.getSupportActionBar().hide();
         }
 
         puzzleNumber = getIntent().getIntExtra("puzzle_number",0);
-//        levelNumber = puzzleNumber;
+
+        // Initializing SharedPreferences
+        sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
 
         TextView puzzleNumberTextview = findViewById(R.id.puzzle_number_textview);
         puzzleNumberTextview.setText(String.valueOf(puzzleNumber));
 
-        AppDatabase db = AppDatabase.getInstance(this);
-        lettersData = db.puzzleDao().getPuzzleById(puzzleNumber);
-        cluesData = db.clueDao().getClueById(puzzleNumber);
+        // creating editText references
+        for (int i=0; i<7; i++){
+            for(int j=0; j<7; j++){
+                String editTextId = "r" + (i + 1) + "c" + (j + 1);
+                @SuppressLint("DiscouragedApi") int resID = getResources().getIdentifier(editTextId, "id", getPackageName());
+                letterEditTexts[i][j] = findViewById(resID);
+            }
+        }
 
+        AppDatabase db = AppDatabase.getInstance(this);
+        LiveData<List<PuzzleEntity>> lettersData = db.puzzleDao().getPuzzleById(puzzleNumber);
+        LiveData<List<ClueEntity>> cluesData = db.clueDao().getClueById(puzzleNumber);
 
         observeOnce(lettersData, this, newValue -> {
-//            tvr1c1.setText(newValue.get(0).getLetter());
             setLetters(newValue);
-//            Log.d("Data from database", "check it working " + newValue.get(0).getLetter());
         });
 
         observeOnce(cluesData, this, newValue -> {
             setClues(newValue);
 //            Log.d("Data from database", "check it working " + newValue.get(0).getClue());
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String userAnswersTemp = sharedPreferences.getString("user_puzzle_answers", "");
+        int nextLevel = sharedPreferences.getInt("next_level", 1);
+//        Log.d("Data from spfs", "check it working " +  userAnswersTemp);
+
+//        //if the user opens another unlocked puzzle other than the last one,
+        if(puzzleNumber == nextLevel && !userAnswersTemp.isEmpty()){
+            String[] userAnswersTempArray = formatString.stringArrayMaker(userAnswersTemp);
+//            Log.d("Data from spfs", "check it working " + Arrays.toString(userAnswersTempArray));
+
+            for (int i=0; i<7; i++){
+                for(int j=0; j<7; j++){
+                    letterEditTexts[i][j].setText(userAnswersTempArray[(i * 7) + j]);
+                }
+            }
+
+        }
+
 
     }
 
@@ -73,16 +107,18 @@ public class SolvePuzzle extends AppCompatActivity{
     protected void onPause(){
         super.onPause();
 
-        SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-
-        // If the level is completed for the first time, this if condition executes
-        if (puzzleNumber == sharedPreferences.getInt("completedLevel", 0) + 1 &&
-                nextLevel != 0 ) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("completedLevel", nextLevel);
-            editor.apply();
+        // getting the user inputs from the editTexts and putting them to userInput array
+        for (int i=0; i<7; i++){
+            for(int j=0; j<7; j++){
+                userInput[i][j] = letterEditTexts[i][j].getText().toString().trim();
+            }
         }
 
+        //saving user answers to sharedPreferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("user_puzzle_answers", formatString.LinearStringMaker(userInput));
+        editor.apply();
     }
 
     // This method is for observing data once and then automatically removing the observer.
@@ -102,26 +138,17 @@ public class SolvePuzzle extends AppCompatActivity{
 
         Button checkAnswers = findViewById(R.id.check_answers_button);
 
-        // making editText references
-        for(int i=0; i<7; i++){
-            for (int j = 0; j < 7; j++){
-                String editTextId = "r" + (i + 1) + "c" + (j + 1);
-                int resID = getResources().getIdentifier(editTextId, "id", getPackageName());
-                letterEditTexts[i][j] = findViewById(resID);
-            }
-        }
-
         //making textView references
         for(int i=0; i<7; i++){
             for(int j=0; j<7; j++){
                 String textViewId = "tiny_text_" + (i+1) + "_" + (j+1);
-                int resID = getResources().getIdentifier(textViewId, "id", getPackageName());
-                indexNumbers[i][j] = findViewById(resID);
+                @SuppressLint("DiscouragedApi") int resID = getResources().getIdentifier(textViewId, "id", getPackageName());
+                indexNumberTextViews[i][j] = findViewById(resID);
             }
         }
 
         MakePuzzle makePuzzle = new MakePuzzle();
-        makePuzzle.puzzleMaker(letterEditTexts, indexNumbers, box);
+        makePuzzle.puzzleMaker(letterEditTexts, indexNumberTextViews, box);
 
         //checking the answers. if all the answers are correct, can to go the next puzzle
         checkAnswers.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +188,7 @@ public class SolvePuzzle extends AppCompatActivity{
                                 letterEditTexts[i][j].setText(letterDatabase);
                                 isLevelCompleted = true;
                             } else {
+                                isLevelCompleted = false;
                                 //set editText red if the user answer is wrong
                                 letterEditTexts[i][j].setBackgroundColor(Color.RED);
                             }
@@ -171,13 +199,14 @@ public class SolvePuzzle extends AppCompatActivity{
                 if (isLevelCompleted) {
                     nextLevel = puzzleNumber + 1;
 
-                    SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    // if all answers are correct, save an empty string to user answers on shared preferences
+                    editor.putString("user_puzzle_answers","");
 
                     if (puzzleNumber == sharedPreferences.getInt("next_level", 1)){
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putInt("next_level", nextLevel);
-                        editor.apply();
                     }
+                    editor.apply();
                 }
             }
         });
@@ -218,31 +247,25 @@ public class SolvePuzzle extends AppCompatActivity{
             }
         }
 
-        buttonAcross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                directionIcon.setImageResource(R.drawable.icon_stick_right);
+        buttonAcross.setOnClickListener(v -> {
+            directionIcon.setImageResource(R.drawable.icon_stick_right);
 //                buttonDown.setBackgroundColor(Color.GRAY);
 //                buttonAcross.setBackgroundColor(Color.MAGENTA);
-                for(TextView clue: cluesDown){
-                    clue.setVisibility(View.GONE);
-                }
-                for(TextView clue: cluesAcross){
-                    clue.setVisibility(View.VISIBLE);
-                }
+            for(TextView clue: cluesDown){
+                clue.setVisibility(View.GONE);
+            }
+            for(TextView clue: cluesAcross){
+                clue.setVisibility(View.VISIBLE);
             }
         });
 
-        buttonDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                directionIcon.setImageResource(R.drawable.icon_stick_down);
-                for(TextView clue: cluesAcross){
-                    clue.setVisibility(View.GONE);
-                }
-                for(TextView clue: cluesDown){
-                    clue.setVisibility(View.VISIBLE);
-                }
+        buttonDown.setOnClickListener(v -> {
+            directionIcon.setImageResource(R.drawable.icon_stick_down);
+            for(TextView clue: cluesAcross){
+                clue.setVisibility(View.GONE);
+            }
+            for(TextView clue: cluesDown){
+                clue.setVisibility(View.VISIBLE);
             }
         });
 

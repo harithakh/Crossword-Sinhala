@@ -1,4 +1,4 @@
-package com.haritha_kh.crosswordsinhala;
+package com.haritha_kh.crosswordsinhala.utils;
 
 import android.graphics.Color;
 import android.widget.EditText;
