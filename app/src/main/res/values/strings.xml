@@ -17,4 +17,17 @@
     </string>
 
     <string name="puzzle_box_speakable_text">Puzzle box</string>
+    <string name="choose_a_puzzle">Choose a Puzzle</string>
+    <string name="send_your_puzzle">Send Your Puzzle</string>
+    <string name="help_action_menu">Help</string>
+    <string name="about_us_action_menu">About us</string>
+
+    <string name="how_to_description">
+        1) Select a puzzle from the menu.\n
+        2) Fill the puzzle.\n
+        3) You can navigate through boxes using arrow keys.\n
+        4) You can see the clues by clicking Across and Down buttons.\n
+        5) After filling the boxes, click check answers button to check the correct answers.\n
+        6) If all the answers are correct, the next puzzle will unlock.\n
+    </string>
 </resources>

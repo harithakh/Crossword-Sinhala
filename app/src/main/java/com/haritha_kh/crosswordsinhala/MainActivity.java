@@ -1,25 +1,32 @@
 package com.haritha_kh.crosswordsinhala;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.gridlayout.widget.GridLayout;
-import android.widget.TextView;
+
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     private final List<Button> buttonList = new ArrayList<>();
     private SharedPreferences sharedPreferences;
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +35,21 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         int nextLevel = sharedPreferences.getInt("next_level", 1);
 
+        // progress circle
+        progressBar = findViewById(R.id.progress_circular);
+
+        // tool bar
+        Toolbar toolbar = findViewById(R.id.activity_main_toolbar);
+        setSupportActionBar(toolbar);
+        // Hide the title
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
         makeButtons(nextLevel,60); //total must update
 
+        ScrollView scrollView = findViewById(R.id.activity_main_scroll_view);
+
+        // button corresponding to the completed level is displayed at the top.
+        scrollView.post(() -> scrollView.scrollTo(0,buttonList.get(nextLevel-1).getTop()));
     }
 
 
@@ -39,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
         // when a level completed and user comes back to this page, the active buttons will be updated.
         int nextLevel = sharedPreferences.getInt("next_level", 1);
 
-        TextView textView = findViewById(R.id.sharedFCheck); //test
-        textView.setText(String.valueOf(nextLevel));
+//        TextView textView = findViewById(R.id.sharedFCheck); //test
+//        textView.setText(String.valueOf(nextLevel));
 
         for (Button button : buttonList){
             int buttonNumber = buttonList.indexOf(button) + 1;
@@ -48,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        progressBar.setVisibility(View.VISIBLE); // hide progressBar circle
+
                         startActivity(new Intent(MainActivity.this, SolvePuzzle.class)
                                 .putExtra("puzzle_number",buttonNumber));
                     };
@@ -55,6 +78,13 @@ public class MainActivity extends AppCompatActivity {
                 button.setEnabled(true);
             }
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // hide the progress circle.
+        progressBar.setVisibility(View.GONE);
     }
 
     private void makeButtons(int currentLevel, int totalPuzzles){
@@ -95,5 +125,25 @@ public class MainActivity extends AppCompatActivity {
             buttonList.add(button);
 
         }
+    }
+
+    // inflate menu resource file
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.three_dot_menu, menu);
+        return true;
+    }
+
+    // to handle clicks on three dots menu items.
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_help){
+            Intent intent = new Intent(this, InfoActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

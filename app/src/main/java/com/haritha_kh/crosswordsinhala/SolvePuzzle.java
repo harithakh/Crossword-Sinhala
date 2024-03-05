@@ -1,5 +1,6 @@
 package com.haritha_kh.crosswordsinhala;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -9,9 +10,9 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,10 +26,9 @@ import com.haritha_kh.crosswordsinhala.utils.FormatString;
 import com.haritha_kh.crosswordsinhala.utils.MakePuzzle;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class SolvePuzzle extends AppCompatActivity{
+public class SolvePuzzle extends AppCompatActivity {
 
     private int puzzleNumber;
     private int nextLevel = 0;
@@ -37,6 +37,7 @@ public class SolvePuzzle extends AppCompatActivity{
     String[][] userInput = new String[7][7];
     FormatString formatString = new FormatString();
     private SharedPreferences sharedPreferences;
+    private boolean emptyAnswersOnSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,34 +45,40 @@ public class SolvePuzzle extends AppCompatActivity{
         setContentView(R.layout.activity_solve_puzzle);
 
         // Hiding action bar
-        if(getSupportActionBar()!=null){
+        if (getSupportActionBar() != null) {
             this.getSupportActionBar().hide();
         }
+        // Hide the status bar
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        puzzleNumber = getIntent().getIntExtra("puzzle_number",0);
+        puzzleNumber = getIntent().getIntExtra("puzzle_number", 0);
 
         // Initializing SharedPreferences
         sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
 
         TextView puzzleNumberTextview = findViewById(R.id.puzzle_number_textview);
-        puzzleNumberTextview.setText(String.valueOf(puzzleNumber));
+        String pNoText = "ප්‍රෙහේලිකා අංක" + puzzleNumber;
+        puzzleNumberTextview.setText(pNoText);
+
+        //if this is true, user inputs on puzzle will be saved on shared preferences.
+        emptyAnswersOnSharedPreferences = false;
 
         // creating editText references
-        for (int i=0; i<7; i++){
-            for(int j=0; j<7; j++){
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
                 String editTextId = "r" + (i + 1) + "c" + (j + 1);
                 @SuppressLint("DiscouragedApi") int resID = getResources().getIdentifier(editTextId, "id", getPackageName());
                 letterEditTexts[i][j] = findViewById(resID);
             }
         }
 
+        moveCursor(letterEditTexts);
+
         AppDatabase db = AppDatabase.getInstance(this);
         LiveData<List<PuzzleEntity>> lettersData = db.puzzleDao().getPuzzleById(puzzleNumber);
         LiveData<List<ClueEntity>> cluesData = db.clueDao().getClueById(puzzleNumber);
 
-        observeOnce(lettersData, this, newValue -> {
-            setLetters(newValue);
-        });
+        observeOnce(lettersData, this, this::setLetters);
 
         observeOnce(cluesData, this, newValue -> {
             setClues(newValue);
@@ -88,12 +95,12 @@ public class SolvePuzzle extends AppCompatActivity{
 //        Log.d("Data from spfs", "check it working " +  userAnswersTemp);
 
 //        //if the user opens another unlocked puzzle other than the last one,
-        if(puzzleNumber == nextLevel && !userAnswersTemp.isEmpty()){
+        if (puzzleNumber == nextLevel && !userAnswersTemp.isEmpty()) {
             String[] userAnswersTempArray = formatString.stringArrayMaker(userAnswersTemp);
 //            Log.d("Data from spfs", "check it working " + Arrays.toString(userAnswersTempArray));
 
-            for (int i=0; i<7; i++){
-                for(int j=0; j<7; j++){
+            for (int i = 0; i < 7; i++) {
+                for (int j = 0; j < 7; j++) {
                     letterEditTexts[i][j].setText(userAnswersTempArray[(i * 7) + j]);
                 }
             }
@@ -104,26 +111,36 @@ public class SolvePuzzle extends AppCompatActivity{
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
 
-        // getting the user inputs from the editTexts and putting them to userInput array
-        for (int i=0; i<7; i++){
-            for(int j=0; j<7; j++){
-                userInput[i][j] = letterEditTexts[i][j].getText().toString().trim();
+        int nextLevel = sharedPreferences.getInt("next_level", 1);
+
+
+        if (puzzleNumber == nextLevel) {
+            // getting the user inputs from the editTexts and putting them to userInput array
+            for (int i = 0; i < 7; i++) {
+                for (int j = 0; j < 7; j++) {
+                    userInput[i][j] = letterEditTexts[i][j].getText().toString().trim();
+                }
             }
+
+            //saving user answers to sharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("user_puzzle_answers", formatString.LinearStringMaker(userInput));
+            editor.apply();
+
         }
-
-        //saving user answers to sharedPreferences
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putString("user_puzzle_answers", formatString.LinearStringMaker(userInput));
-        editor.apply();
+        if (emptyAnswersOnSharedPreferences && puzzleNumber == nextLevel - 1) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("user_puzzle_answers", "");
+            editor.apply();
+        }
     }
 
     // This method is for observing data once and then automatically removing the observer.
     // related to LiveData
-    public static <T> void observeOnce(LiveData<T> liveData, LifecycleOwner owner, Observer<T> observer){
+    public static <T> void observeOnce(LiveData<T> liveData, LifecycleOwner owner, Observer<T> observer) {
         liveData.observe(owner, new Observer<T>() {
             @Override
             public void onChanged(T t) {
@@ -134,14 +151,14 @@ public class SolvePuzzle extends AppCompatActivity{
     }
 
     //set the initial letters of the puzzle and checking answers
-    private void setLetters(List<PuzzleEntity> box){
+    private void setLetters(List<PuzzleEntity> box) {
 
         Button checkAnswers = findViewById(R.id.check_answers_button);
 
         //making textView references
-        for(int i=0; i<7; i++){
-            for(int j=0; j<7; j++){
-                String textViewId = "tiny_text_" + (i+1) + "_" + (j+1);
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
+                String textViewId = "tiny_text_" + (i + 1) + "_" + (j + 1);
                 @SuppressLint("DiscouragedApi") int resID = getResources().getIdentifier(textViewId, "id", getPackageName());
                 indexNumberTextViews[i][j] = findViewById(resID);
             }
@@ -152,14 +169,15 @@ public class SolvePuzzle extends AppCompatActivity{
 
         //checking the answers. if all the answers are correct, can to go the next puzzle
         checkAnswers.setOnClickListener(new View.OnClickListener() {
-            private boolean isLevelCompleted;
+
             @Override
             public void onClick(View v) {
+                boolean isLevelCompleted = true;
                 for (int i = 0; i < 7; i++) {
                     for (int j = 0; j < 7; j++) {
-                        String letterDatabase = box.get((i*7)+j).getLetter(); //letter from db
+                        String letterDatabase = box.get((i * 7) + j).getLetter(); //letter from db
 
-                        if(letterDatabase!=null){
+                        if (letterDatabase != null) {
 
                             String editTextInput = letterEditTexts[i][j].getText().toString().trim();
                             // userInput string must be used later to save data on SharedPreferences.
@@ -170,11 +188,11 @@ public class SolvePuzzle extends AppCompatActivity{
                             // check other_letters from the database
                             String[] otherLetters;
                             boolean isOtherLettersMatches = false;
-                            if (box.get((i*7)+j).getOtherLetters() != null) {
-                                otherLetters = box.get((i*7)+j).getOtherLetters().split(",");
+                            if (box.get((i * 7) + j).getOtherLetters() != null) {
+                                otherLetters = box.get((i * 7) + j).getOtherLetters().split(",");
 
                                 //check if the answers matches with other letters
-                                for(String str : otherLetters){
+                                for (String str : otherLetters) {
                                     if (editTextInput.equals(str)) {
                                         isOtherLettersMatches = true;
                                         break;
@@ -182,11 +200,9 @@ public class SolvePuzzle extends AppCompatActivity{
                                 }
                             }
 
-                            if (editTextInput.equals(letterDatabase)){
-                                isLevelCompleted = true;
-                            } else if (isOtherLettersMatches){
+                            if (isOtherLettersMatches) {
                                 letterEditTexts[i][j].setText(letterDatabase);
-                                isLevelCompleted = true;
+                                // isLevelCompleted = true;
                             } else {
                                 isLevelCompleted = false;
                                 //set editText red if the user answer is wrong
@@ -198,23 +214,24 @@ public class SolvePuzzle extends AppCompatActivity{
                 //if all the answers are correct,level number increases by 1
                 if (isLevelCompleted) {
                     nextLevel = puzzleNumber + 1;
+                    emptyAnswersOnSharedPreferences = true;
 
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    // if all answers are correct, save an empty string to user answers on shared preferences
-                    editor.putString("user_puzzle_answers","");
 
-                    if (puzzleNumber == sharedPreferences.getInt("next_level", 1)){
+                    if (puzzleNumber == sharedPreferences.getInt("next_level", 1)) {
                         editor.putInt("next_level", nextLevel);
                     }
                     editor.apply();
+                    levelCompleteDialog();
                 }
+
             }
         });
 
     }
 
     //set the clues to the textViews.
-    private void setClues(List<ClueEntity> clues){
+    private void setClues(List<ClueEntity> clues) {
 
         List<TextView> cluesAcross = new ArrayList<>();
         List<TextView> cluesDown = new ArrayList<>();
@@ -222,14 +239,12 @@ public class SolvePuzzle extends AppCompatActivity{
         Button buttonAcross = findViewById(R.id.across_button);
         Button buttonDown = findViewById(R.id.down_button);
 
-        ImageView directionIcon = findViewById(R.id.direction_image_view);
-
         LinearLayout cluesContainer = findViewById(R.id.clues_container);
 
         // put data that comes from the database to cluesAcross and cluesDown Lists.
-        for(int i=0; i<clues.size(); i++){
+        for (int i = 0; i < clues.size(); i++) {
             TextView textView = new TextView(this);
-            String displayText = clues.get(i).getIndexNumber()+ ") " + clues.get(i).getClue();
+            String displayText = clues.get(i).getIndexNumber() + ") " + clues.get(i).getClue();
             textView.setText(displayText);
             textView.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -238,7 +253,7 @@ public class SolvePuzzle extends AppCompatActivity{
             textView.setTextColor(Color.BLACK);
             cluesContainer.addView(textView);
 
-            if(clues.get(i).getOrientation()==0){
+            if (clues.get(i).getOrientation() == 0) {
                 textView.setVisibility(View.VISIBLE);
                 cluesAcross.add(textView);
             } else {
@@ -248,28 +263,102 @@ public class SolvePuzzle extends AppCompatActivity{
         }
 
         buttonAcross.setOnClickListener(v -> {
-            directionIcon.setImageResource(R.drawable.icon_stick_right);
+            buttonAcross.setTextColor(Color.LTGRAY);
+            buttonDown.setTextColor(Color.WHITE);
 //                buttonDown.setBackgroundColor(Color.GRAY);
 //                buttonAcross.setBackgroundColor(Color.MAGENTA);
-            for(TextView clue: cluesDown){
+            for (TextView clue : cluesDown) {
                 clue.setVisibility(View.GONE);
             }
-            for(TextView clue: cluesAcross){
+            for (TextView clue : cluesAcross) {
                 clue.setVisibility(View.VISIBLE);
             }
         });
 
         buttonDown.setOnClickListener(v -> {
-            directionIcon.setImageResource(R.drawable.icon_stick_down);
-            for(TextView clue: cluesAcross){
+            buttonDown.setTextColor(Color.LTGRAY);
+            buttonAcross.setTextColor(Color.WHITE);
+
+            for (TextView clue : cluesAcross) {
                 clue.setVisibility(View.GONE);
             }
-            for(TextView clue: cluesDown){
+            for (TextView clue : cluesDown) {
                 clue.setVisibility(View.VISIBLE);
             }
         });
 
 
+    }
+
+    private void levelCompleteDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        @SuppressLint("InflateParams") View dialogView = getLayoutInflater().inflate(R.layout.dialog_level_completed, null);
+
+        builder.setView(dialogView);
+
+        TextView levelCompletTextView = dialogView.findViewById(R.id.level_completed_text_view);
+        Button buttonOk = dialogView.findViewById(R.id.level_completed_button);
+
+        AlertDialog dialog = builder.create();
+        buttonOk.setOnClickListener(v -> {
+            // Dismiss the dialog
+            dialog.dismiss();
+            // Finish the current activity to go back to the previous activity
+            finish();
+        });
+        dialog.show(); // This displays the dialog to the user
+    }
+
+    //moving cursor on blocks
+    private void moveCursor(EditText[][] editTexts){
+        Button moveAcross = findViewById(R.id.move_across_button);
+        Button moveDown = findViewById(R.id.move_down_button);
+
+        moveAcross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get the current focused EditText
+                View focusedView = getCurrentFocus();
+                // Find the index of the focused EditText in the grid
+                int[] index = {-1, -1};
+                for(int i = 0; i<7; i++){
+                    for(int j=0; j<7;j++){
+                        if(editTexts[i][j] == focusedView){
+                            index[0] = i;
+                            index[1] = j;
+                            break;
+                        }
+                    }
+                }
+                // Move focus to the EditText to the right
+                if (index[0] != -1 && index[1]<6){
+                    editTexts[index[0]][index[1]+1].requestFocus();
+                }
+            }
+        });
+
+        moveDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get the current focused EditText
+                View focusedView = getCurrentFocus();
+                // Find the index of the focused EditText in the grid
+                int[] index = {-1, -1};
+                for(int i = 0; i<7; i++){
+                    for(int j=0; j<7;j++){
+                        if(editTexts[i][j] == focusedView){
+                            index[0] = i;
+                            index[1] = j;
+                            break;
+                        }
+                    }
+                }
+                // Move focus to the EditText to the right
+                if (index[0] != -1 && index[0]<6){
+                    editTexts[index[0]+1][index[1]].requestFocus();
+                }
+            }
+        });
     }
 
 }
