@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cream"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -12,7 +13,7 @@
         android:id="@+id/activity_main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/yellow"
+        android:background="@color/dark_blue"
         android:elevation="4dp">
 
         <TextView
@@ -20,8 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/choose_a_puzzle"
+            android:textColor="@color/gold"
             android:textSize="24sp"
-            android:textColor="@color/black"/>
+            android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
 
@@ -36,12 +38,14 @@
         android:id="@+id/activity_main_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/cream"
         android:padding="5dp">
 
         <androidx.gridlayout.widget.GridLayout
             android:id="@+id/menuButtonsGrid"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@color/cream"/>
     </ScrollView>
 
 

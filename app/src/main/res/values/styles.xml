@@ -2,8 +2,9 @@
 <resources>
 
     <style name="menu_button_style">
-        <item name="android:layout_width">60dp</item>
-        <item name="android:layout_height">60dp</item>
+        <item name="backgroundColor">@color/gold</item>
+        <item name="marginHorizontal">10dp</item>
+        <item name="android:radius">5dp</item>
     </style>
 
     <style name="puzzle_box_style">
@@ -32,7 +33,12 @@
         <item name="android:layout_margin">2dp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">18sp</item>
-<!--        <item name="android:visibility">gone</item>-->
+    </style>
+
+    <style name="puzzle_Page_button_style">
+        <item name="android:backgroundTint">@color/dark_blue</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
 </resources>

@@ -7,12 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.gridlayout.widget.GridLayout;
 
 import android.widget.ProgressBar;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         // Hide the title
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
+        // don't call this method on onResume.
         makeButtons(nextLevel,60); //total must update
 
         ScrollView scrollView = findViewById(R.id.activity_main_scroll_view);
@@ -75,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
                                 .putExtra("puzzle_number",buttonNumber));
                     };
                 });
+                button.setForeground(null);
+                button.setTextColor(ContextCompat.getColor(this, R.color.gold));
+                button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.light_blue));
                 button.setEnabled(true);
             }
         }
@@ -89,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void makeButtons(int currentLevel, int totalPuzzles){
         int numCols = 3;
-        GridLayout gridLayout = findViewById(R.id.menuButtonsGrid);
 
+        GridLayout gridLayout = findViewById(R.id.menuButtonsGrid);
         gridLayout.setColumnCount(numCols);
         int numRows = (int) Math.ceil((double) totalPuzzles / numCols);
         gridLayout.setRowCount(numRows);
@@ -101,15 +107,17 @@ public class MainActivity extends AppCompatActivity {
             int puzzleNumber = i;
             Button button = new Button(this);
             button.setText(String.valueOf(i));
+            button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36);
             button.setHeight(250);
 
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-//            params.width = 0; // Set width to 0 to let GridLayout manage the width
-//            params.height = 0;
+
             params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f); // Set row weight to 1
             params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
 
             if (puzzleNumber <= currentLevel) {
+                button.setTextColor(ContextCompat.getColor(this, R.color.gold));
+                button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.light_blue));
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -118,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
                     };
                 });
             } else {
+                //locked buttons
+                button.setTextColor(ContextCompat.getColor(this, R.color.cream));
+                button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lighter_blue));
+                button.setForeground(ContextCompat.getDrawable(this, R.drawable.lock_icon));
                 button.setEnabled(false);
             }
             gridLayout.addView(button, params);

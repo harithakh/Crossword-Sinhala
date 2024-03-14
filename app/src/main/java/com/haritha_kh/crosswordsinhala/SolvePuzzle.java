@@ -2,6 +2,7 @@ package com.haritha_kh.crosswordsinhala;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -180,7 +181,7 @@ public class SolvePuzzle extends AppCompatActivity {
                         if (letterDatabase != null) {
 
                             String editTextInput = letterEditTexts[i][j].getText().toString().trim();
-                            // userInput string must be used later to save data on SharedPreferences.
+                            // userInput string array used to save data on SharedPreferences.
                             userInput[i][j] = editTextInput;
 
                             letterEditTexts[i][j].setBackgroundColor(Color.WHITE);
@@ -200,7 +201,9 @@ public class SolvePuzzle extends AppCompatActivity {
                                 }
                             }
 
-                            if (isOtherLettersMatches) {
+                            if (editTextInput.equals(letterDatabase)){
+                                letterEditTexts[i][j].setBackgroundColor(Color.WHITE);
+                            } else if (isOtherLettersMatches) {
                                 letterEditTexts[i][j].setText(letterDatabase);
                                 // isLevelCompleted = true;
                             } else {
@@ -263,10 +266,10 @@ public class SolvePuzzle extends AppCompatActivity {
         }
 
         buttonAcross.setOnClickListener(v -> {
-            buttonAcross.setTextColor(Color.LTGRAY);
-            buttonDown.setTextColor(Color.WHITE);
-//                buttonDown.setBackgroundColor(Color.GRAY);
-//                buttonAcross.setBackgroundColor(Color.MAGENTA);
+//            buttonAcross.setTextColor(Color.LTGRAY);
+//            buttonDown.setTextColor(Color.WHITE);
+            buttonAcross.setBackgroundColor(ContextCompat.getColor(this, R.color.light_blue));
+            buttonDown.setBackgroundColor(ContextCompat.getColor(this, R.color.dark_blue));
             for (TextView clue : cluesDown) {
                 clue.setVisibility(View.GONE);
             }
@@ -276,8 +279,8 @@ public class SolvePuzzle extends AppCompatActivity {
         });
 
         buttonDown.setOnClickListener(v -> {
-            buttonDown.setTextColor(Color.LTGRAY);
-            buttonAcross.setTextColor(Color.WHITE);
+            buttonDown.setBackgroundColor(ContextCompat.getColor(this, R.color.light_blue));
+            buttonAcross.setBackgroundColor(ContextCompat.getColor(this, R.color.dark_blue));
 
             for (TextView clue : cluesAcross) {
                 clue.setVisibility(View.GONE);
