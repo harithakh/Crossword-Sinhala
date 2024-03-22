@@ -1,33 +1,54 @@
 <resources>
     <string name="app_name">Crossword Sinhala</string>
 
-    <string name="five_by_five">5 x 5</string>
-    <string name="seven_by_seven">7 x 7</string>
+    <!--    menu page   -->
     <string name="help">Help</string>
     <string name="about">About</string>
+    <string name="choose_a_puzzle">Choose a Puzzle</string>
 
+    <!--    action menu     -->
+    <string name="help_action_menu">Help</string>
+    <string name="about_us_action_menu">About</string>
+
+    <!--    puzzle solving page     -->
     <string name="across">හරහට</string>
     <string name="down">පහළට</string>
-
     <string name="check_answers">Check Answers</string>
+    <string name="puzzle_box_speakable_text">Puzzle box</string>
+
+    <!--    instructions page   -->
+    <string name="help_topic_string">ක්‍රීඩා කිරීමට උපදෙස් </string>
+    <string name="how_to_description">
+
+        පළමුව විසඳීම සඳහා ප්‍රෙහේලිකා මෙනුවෙන් ප්‍රෙහේලිකාවක් තෝරා ගන්න.\n\n
+        ඉන්පසු ඔබට ප්‍රෙහේලිකාව විසඳීමේ පිටුව දිස් වේ.\n\n
+        ප්‍රෙහේලිකාව විසඳීමට අවශ්‍ය ඉඟි ලබා ගැනීමට \"හරහට\" සහ \"පහළට\" බොත්තම් භාවිතා කරන්න\n\n
+        කොටු පිරවීමේදී,\n
+        පිරවීමට අවශ්‍ය කොටුව මත ටච් කරන්න. එවිට යතුරු පුවරුව දිස් වේ.\n
+        සිංහල අකුරු පමණක් භාවිත කරන්න.\n
+        එක් කොටුවක එක් අකුරක් පමණක් පුරවන්න.\n\n
+        එක් කොටුවක සිට තවත් කොටුවකට යාමට මෙම ඊතල ➡️⬇️ සහිත බොත්තම් භාවිත කරන්න.\n\n
+        පිළිතුරු පරික්ෂ කිරීමට \"Check Answers\" බොත්තම ඔබන්න. වැරදි පිළිතුරු හා හිස්තැන් සහිත කොටු රතු පාටින් පෙන්වනු ඇත.\n\n
+        පිළිතුරු සියල්ලම නිවැරදි නම් ඊලග අදියරය විවෘත වේ.\n\n
+        ඔබට යම් ගැටළුවක් තිබේ නම් පහත ඊ මේල් ලිපිනයට පණිවිඩයක් යොමු කරන්න.\n\n
+
+    </string>
+    <string name="contact_email">www.haritha3h@gmail.com</string>
+
+    <!--    Level completed dialog box    -->
+    <string name="string_greeting">🏆Congratulations!🏆</string>
+    <string name="string_menu">Menu</string>
+
+
+    <!--    about page  -->
+    <string name="about_string">Sinhala Crossword Puzzle App</string>
+    <string name="content_description_logo">Sinhala Crossword Puzzle App logo</string>
+    <string name="about_developer_info">Developed by Haritha Hulangamuwa.\n2024</string>
+    <string name="privacy_policy">Privacy Policy</string>
+
 
     <string name="instructions_for_wrong_answers">
-        *කොටු සියල්ලම පුරවන්න. \n
-        *අක්ෂර වින්‍යාසය ගැන සැලකිලිමත් වන්න.
+        කොටු සියල්ලම පුරවන්න.
     </string>
 
-    <string name="puzzle_box_speakable_text">Puzzle box</string>
-    <string name="choose_a_puzzle">Choose a Puzzle</string>
-    <string name="send_your_puzzle">Send Your Puzzle</string>
-    <string name="help_action_menu">Help</string>
-    <string name="about_us_action_menu">About us</string>
-
-    <string name="how_to_description">
-        1) Select a puzzle from the menu.\n
-        2) Fill the puzzle.\n
-        3) You can navigate through boxes using arrow keys.\n
-        4) You can see the clues by clicking Across and Down buttons.\n
-        5) After filling the boxes, click check answers button to check the correct answers.\n
-        6) If all the answers are correct, the next puzzle will unlock.\n
-    </string>
 </resources>

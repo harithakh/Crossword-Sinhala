@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 import androidx.appcompat.widget.Toolbar;
@@ -40,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
         // progress circle
         progressBar = findViewById(R.id.progress_circular);
 
+        Window window = getWindow(); 
+        // Set the status bar color
+        window.setStatusBarColor(getColor(R.color.dark_blue));
+
         // tool bar
         Toolbar toolbar = findViewById(R.id.activity_main_toolbar);
         setSupportActionBar(toolbar);
@@ -47,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         // don't call this method on onResume.
-        makeButtons(nextLevel,60); //total must update
+        makeButtons(nextLevel,25); //total must update
 
         ScrollView scrollView = findViewById(R.id.activity_main_scroll_view);
 
@@ -78,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
                                 .putExtra("puzzle_number",buttonNumber));
                     };
                 });
-                button.setForeground(null);
+                button.setText(String.valueOf(buttonNumber));
+                button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 48);
                 button.setTextColor(ContextCompat.getColor(this, R.color.gold));
                 button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.light_blue));
                 button.setEnabled(true);
@@ -107,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             int puzzleNumber = i;
             Button button = new Button(this);
             button.setText(String.valueOf(i));
-            button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36);
+
             button.setHeight(250);
 
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
@@ -116,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
             params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
 
             if (puzzleNumber <= currentLevel) {
+                button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 48);
                 button.setTextColor(ContextCompat.getColor(this, R.color.gold));
                 button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.light_blue));
                 button.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +136,11 @@ public class MainActivity extends AppCompatActivity {
                 //locked buttons
                 button.setTextColor(ContextCompat.getColor(this, R.color.cream));
                 button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lighter_blue));
-                button.setForeground(ContextCompat.getDrawable(this, R.drawable.lock_icon));
+
+                button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28);
+                String textTemp = i + "\uD83D\uDD12";
+                button.setText(textTemp);
+//                button.setForeground(ContextCompat.getDrawable(this, R.drawable.lock_icon));
                 button.setEnabled(false);
             }
             gridLayout.addView(button, params);
@@ -152,8 +163,13 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_help){
             Intent intent = new Intent(this, InfoActivity.class);
+            intent.putExtra("intKey", 1);
             startActivity(intent);
             return true;
+        } else if (id == R.id.action_about) {
+            Intent intent = new Intent(this, InfoActivity.class);
+            intent.putExtra("intKey", 2);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

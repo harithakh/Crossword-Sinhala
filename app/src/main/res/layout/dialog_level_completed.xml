@@ -1,20 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="200dp"
     android:layout_width="300dp"
     android:orientation="vertical"
+    android:background="@color/cream"
     android:gravity="center">
 
     <TextView
         android:id="@+id/level_completed_text_view"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:text="Level Copleted!"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/string_greeting"
+        android:textAlignment="center"
+        android:textColor="@color/dark_blue"
+        android:textSize="12pt"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/greeting_dialog_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textColor="@color/dark_blue"
+        android:textSize="9pt"
+        android:textStyle="bold"
+        tools:text='You finished level 01' />
 
     <Button
         android:id="@+id/level_completed_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ok"/>
+        style="@style/puzzle_Page_button_style"
+        android:text="@string/string_menu"
+        android:layout_marginBottom="15dp"/>
 
 </LinearLayout>

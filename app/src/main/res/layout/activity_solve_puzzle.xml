@@ -620,6 +620,7 @@
             android:id="@+id/across_button"
             android:layout_width="wrap_content"
             style="@style/puzzle_Page_button_style"
+            android:backgroundTint="@color/light_blue"
             android:layout_marginEnd="5dp"
             android:text="@string/across" />
 

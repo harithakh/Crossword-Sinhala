@@ -209,7 +209,7 @@ public class SolvePuzzle extends AppCompatActivity {
                             } else {
                                 isLevelCompleted = false;
                                 //set editText red if the user answer is wrong
-                                letterEditTexts[i][j].setBackgroundColor(Color.RED);
+                                letterEditTexts[i][j].setBackgroundColor(getColor(R.color.light_red));
                             }
                         }
                     }
@@ -225,7 +225,7 @@ public class SolvePuzzle extends AppCompatActivity {
                         editor.putInt("next_level", nextLevel);
                     }
                     editor.apply();
-                    levelCompleteDialog();
+                    levelCompleteDialog();;
                 }
 
             }
@@ -299,7 +299,10 @@ public class SolvePuzzle extends AppCompatActivity {
 
         builder.setView(dialogView);
 
-        TextView levelCompletTextView = dialogView.findViewById(R.id.level_completed_text_view);
+        TextView levelCompletTextView = dialogView.findViewById(R.id.greeting_dialog_text_view);
+        String tx = "You finished level " + puzzleNumber;
+        levelCompletTextView.setText(tx);
+
         Button buttonOk = dialogView.findViewById(R.id.level_completed_button);
 
         AlertDialog dialog = builder.create();
@@ -317,49 +320,43 @@ public class SolvePuzzle extends AppCompatActivity {
         Button moveAcross = findViewById(R.id.move_across_button);
         Button moveDown = findViewById(R.id.move_down_button);
 
-        moveAcross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get the current focused EditText
-                View focusedView = getCurrentFocus();
-                // Find the index of the focused EditText in the grid
-                int[] index = {-1, -1};
-                for(int i = 0; i<7; i++){
-                    for(int j=0; j<7;j++){
-                        if(editTexts[i][j] == focusedView){
-                            index[0] = i;
-                            index[1] = j;
-                            break;
-                        }
+        moveAcross.setOnClickListener(v -> {
+            // Get the current focused EditText
+            View focusedView = getCurrentFocus();
+            // Find the index of the focused EditText in the grid
+            int[] index = {-1, -1};
+            for(int i = 0; i<7; i++){
+                for(int j=0; j<7;j++){
+                    if(editTexts[i][j] == focusedView){
+                        index[0] = i;
+                        index[1] = j;
+                        break;
                     }
                 }
-                // Move focus to the EditText to the right
-                if (index[0] != -1 && index[1]<6){
-                    editTexts[index[0]][index[1]+1].requestFocus();
-                }
+            }
+            // Move focus to the EditText to the right
+            if (index[0] != -1 && index[1]<6){
+                editTexts[index[0]][index[1]+1].requestFocus();
             }
         });
 
-        moveDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get the current focused EditText
-                View focusedView = getCurrentFocus();
-                // Find the index of the focused EditText in the grid
-                int[] index = {-1, -1};
-                for(int i = 0; i<7; i++){
-                    for(int j=0; j<7;j++){
-                        if(editTexts[i][j] == focusedView){
-                            index[0] = i;
-                            index[1] = j;
-                            break;
-                        }
+        moveDown.setOnClickListener(v -> {
+            // Get the current focused EditText
+            View focusedView = getCurrentFocus();
+            // Find the index of the focused EditText in the grid
+            int[] index = {-1, -1};
+            for(int i = 0; i<7; i++){
+                for(int j=0; j<7;j++){
+                    if(editTexts[i][j] == focusedView){
+                        index[0] = i;
+                        index[1] = j;
+                        break;
                     }
                 }
-                // Move focus to the EditText to the right
-                if (index[0] != -1 && index[0]<6){
-                    editTexts[index[0]+1][index[1]].requestFocus();
-                }
+            }
+            // Move focus to the EditText to the right
+            if (index[0] != -1 && index[0]<6){
+                editTexts[index[0]+1][index[1]].requestFocus();
             }
         });
     }
