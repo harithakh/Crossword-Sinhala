@@ -51,13 +51,18 @@ public class MainActivity extends AppCompatActivity {
         // Hide the title
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
+        int totalNoOfPuzzles = 10; //total must update
         // don't call this method on onResume.
-        makeButtons(nextLevel,25); //total must update
+        makeButtons(nextLevel,totalNoOfPuzzles);
 
         ScrollView scrollView = findViewById(R.id.activity_main_scroll_view);
 
         // button corresponding to the completed level is displayed at the top.
-        scrollView.post(() -> scrollView.scrollTo(0,buttonList.get(nextLevel-1).getTop()));
+        if (nextLevel <= totalNoOfPuzzles){
+            scrollView.post(() -> scrollView.scrollTo(0,buttonList.get(nextLevel-1).getTop()));
+        } else {
+            scrollView.post(() -> scrollView.scrollTo(0,buttonList.get(nextLevel-2).getTop()));
+        }
     }
 
 
@@ -67,21 +72,15 @@ public class MainActivity extends AppCompatActivity {
         // when a level completed and user comes back to this page, the active buttons will be updated.
         int nextLevel = sharedPreferences.getInt("next_level", 1);
 
-//        TextView textView = findViewById(R.id.sharedFCheck); //test
-//        textView.setText(String.valueOf(nextLevel));
-
         for (Button button : buttonList){
             int buttonNumber = buttonList.indexOf(button) + 1;
             if (buttonNumber <= nextLevel){
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                button.setOnClickListener(v -> {
 
-                        progressBar.setVisibility(View.VISIBLE); // hide progressBar circle
+                    progressBar.setVisibility(View.VISIBLE); // hide progressBar circle
 
-                        startActivity(new Intent(MainActivity.this, SolvePuzzle.class)
-                                .putExtra("puzzle_number",buttonNumber));
-                    };
+                    startActivity(new Intent(MainActivity.this, SolvePuzzle.class)
+                            .putExtra("puzzle_number",buttonNumber));
                 });
                 button.setText(String.valueOf(buttonNumber));
                 button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 48);
@@ -107,8 +106,6 @@ public class MainActivity extends AppCompatActivity {
         int numRows = (int) Math.ceil((double) totalPuzzles / numCols);
         gridLayout.setRowCount(numRows);
 
-        int buttonStyle = R.style.menu_button_style;
-
         for (int i=1; i<totalPuzzles+1; i++){
             int puzzleNumber = i;
             Button button = new Button(this);
@@ -125,13 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 48);
                 button.setTextColor(ContextCompat.getColor(this, R.color.gold));
                 button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.light_blue));
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(MainActivity.this, SolvePuzzle.class)
-                                .putExtra("puzzle_number",puzzleNumber));
-                    };
-                });
+                button.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, SolvePuzzle.class)
+                        .putExtra("puzzle_number",puzzleNumber)));
             } else {
                 //locked buttons
                 button.setTextColor(ContextCompat.getColor(this, R.color.cream));

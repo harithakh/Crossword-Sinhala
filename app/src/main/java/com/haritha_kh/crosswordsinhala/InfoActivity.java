@@ -49,7 +49,7 @@ public class InfoActivity extends AppCompatActivity {
 
             TextView privacyPolicyLink = findViewById(R.id.privacy_policy_text_view);
             privacyPolicyLink.setOnClickListener(v -> {
-                String url = "http://www.slmobiles.com";
+                String url = "https://harithasapps.blogspot.com/2024/03/sinhala-crossword-puzzles-app-privacy.html";
                 Intent intent1 = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent1);
             });
@@ -66,7 +66,7 @@ public class InfoActivity extends AppCompatActivity {
                 appVersion.setText(temp);
 
             } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
 
 

@@ -38,6 +38,7 @@
     <!--    Level completed dialog box    -->
     <string name="string_greeting">🏆Congratulations!🏆</string>
     <string name="string_menu">Menu</string>
+    <string name="next_level_unlocked">Next level unlocked!</string>
 
 
     <!--    about page  -->

@@ -30,7 +30,7 @@ public class MakePuzzle {
                     textViews[i][j].setText(String.valueOf(index));
                 }
             }
-        };
+        }
 
     }
 }

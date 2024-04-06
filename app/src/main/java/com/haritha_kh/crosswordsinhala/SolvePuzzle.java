@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -58,7 +57,7 @@ public class SolvePuzzle extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
 
         TextView puzzleNumberTextview = findViewById(R.id.puzzle_number_textview);
-        String pNoText = "ප්‍රෙහේලිකා අංක" + puzzleNumber;
+        String pNoText = "ප්‍රෙහේලිකා අංක " + puzzleNumber;
         puzzleNumberTextview.setText(pNoText);
 
         //if this is true, user inputs on puzzle will be saved on shared preferences.
@@ -81,10 +80,7 @@ public class SolvePuzzle extends AppCompatActivity {
 
         observeOnce(lettersData, this, this::setLetters);
 
-        observeOnce(cluesData, this, newValue -> {
-            setClues(newValue);
-//            Log.d("Data from database", "check it working " + newValue.get(0).getClue());
-        });
+        observeOnce(cluesData, this, this::setClues);
     }
 
     @Override
@@ -93,12 +89,10 @@ public class SolvePuzzle extends AppCompatActivity {
 
         String userAnswersTemp = sharedPreferences.getString("user_puzzle_answers", "");
         int nextLevel = sharedPreferences.getInt("next_level", 1);
-//        Log.d("Data from spfs", "check it working " +  userAnswersTemp);
 
-//        //if the user opens another unlocked puzzle other than the last one,
+        //if the user opens another unlocked puzzle other than the last one,
         if (puzzleNumber == nextLevel && !userAnswersTemp.isEmpty()) {
             String[] userAnswersTempArray = formatString.stringArrayMaker(userAnswersTemp);
-//            Log.d("Data from spfs", "check it working " + Arrays.toString(userAnswersTempArray));
 
             for (int i = 0; i < 7; i++) {
                 for (int j = 0; j < 7; j++) {
@@ -169,66 +163,62 @@ public class SolvePuzzle extends AppCompatActivity {
         makePuzzle.puzzleMaker(letterEditTexts, indexNumberTextViews, box);
 
         //checking the answers. if all the answers are correct, can to go the next puzzle
-        checkAnswers.setOnClickListener(new View.OnClickListener() {
+        checkAnswers.setOnClickListener(v -> {
+            boolean isLevelCompleted = true;
+            for (int i = 0; i < 7; i++) {
+                for (int j = 0; j < 7; j++) {
+                    String letterDatabase = box.get((i * 7) + j).getLetter(); //letter from db
 
-            @Override
-            public void onClick(View v) {
-                boolean isLevelCompleted = true;
-                for (int i = 0; i < 7; i++) {
-                    for (int j = 0; j < 7; j++) {
-                        String letterDatabase = box.get((i * 7) + j).getLetter(); //letter from db
+                    if (letterDatabase != null) {
 
-                        if (letterDatabase != null) {
+                        String editTextInput = letterEditTexts[i][j].getText().toString().trim();
+                        // userInput string array used to save data on SharedPreferences.
+                        userInput[i][j] = editTextInput;
 
-                            String editTextInput = letterEditTexts[i][j].getText().toString().trim();
-                            // userInput string array used to save data on SharedPreferences.
-                            userInput[i][j] = editTextInput;
+                        letterEditTexts[i][j].setBackgroundColor(Color.WHITE);
 
-                            letterEditTexts[i][j].setBackgroundColor(Color.WHITE);
+                        // check other_letters from the database
+                        String[] otherLetters;
+                        boolean isOtherLettersMatches = false;
+                        if (box.get((i * 7) + j).getOtherLetters() != null) {
+                            otherLetters = box.get((i * 7) + j).getOtherLetters().split(",");
 
-                            // check other_letters from the database
-                            String[] otherLetters;
-                            boolean isOtherLettersMatches = false;
-                            if (box.get((i * 7) + j).getOtherLetters() != null) {
-                                otherLetters = box.get((i * 7) + j).getOtherLetters().split(",");
-
-                                //check if the answers matches with other letters
-                                for (String str : otherLetters) {
-                                    if (editTextInput.equals(str)) {
-                                        isOtherLettersMatches = true;
-                                        break;
-                                    }
+                            //check if the answers matches with other letters
+                            for (String str : otherLetters) {
+                                if (editTextInput.equals(str)) {
+                                    isOtherLettersMatches = true;
+                                    break;
                                 }
                             }
+                        }
 
-                            if (editTextInput.equals(letterDatabase)){
-                                letterEditTexts[i][j].setBackgroundColor(Color.WHITE);
-                            } else if (isOtherLettersMatches) {
-                                letterEditTexts[i][j].setText(letterDatabase);
-                                // isLevelCompleted = true;
-                            } else {
-                                isLevelCompleted = false;
-                                //set editText red if the user answer is wrong
-                                letterEditTexts[i][j].setBackgroundColor(getColor(R.color.light_red));
-                            }
+                        if (editTextInput.equals(letterDatabase)){
+                            letterEditTexts[i][j].setBackgroundColor(Color.WHITE);
+                        } else if (isOtherLettersMatches) {
+                            letterEditTexts[i][j].setText(letterDatabase);
+                            // isLevelCompleted = true;
+                        } else {
+                            isLevelCompleted = false;
+                            //set editText red if the user answer is wrong
+                            letterEditTexts[i][j].setBackgroundColor(getColor(R.color.light_red));
                         }
                     }
                 }
-                //if all the answers are correct,level number increases by 1
-                if (isLevelCompleted) {
-                    nextLevel = puzzleNumber + 1;
-                    emptyAnswersOnSharedPreferences = true;
-
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                    if (puzzleNumber == sharedPreferences.getInt("next_level", 1)) {
-                        editor.putInt("next_level", nextLevel);
-                    }
-                    editor.apply();
-                    levelCompleteDialog();;
-                }
-
             }
+            //if all the answers are correct,level number increases by 1
+            if (isLevelCompleted) {
+                nextLevel = puzzleNumber + 1;
+                emptyAnswersOnSharedPreferences = true;
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                if (puzzleNumber == sharedPreferences.getInt("next_level", 1)) {
+                    editor.putInt("next_level", nextLevel);
+                }
+                editor.apply();
+                levelCompleteDialog();
+            }
+
         });
 
     }
@@ -266,8 +256,7 @@ public class SolvePuzzle extends AppCompatActivity {
         }
 
         buttonAcross.setOnClickListener(v -> {
-//            buttonAcross.setTextColor(Color.LTGRAY);
-//            buttonDown.setTextColor(Color.WHITE);
+
             buttonAcross.setBackgroundColor(ContextCompat.getColor(this, R.color.light_blue));
             buttonDown.setBackgroundColor(ContextCompat.getColor(this, R.color.dark_blue));
             for (TextView clue : cluesDown) {

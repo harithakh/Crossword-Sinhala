@@ -12,7 +12,7 @@ public class ClueEntity {
     private final int id;
 
     @ColumnInfo(name = "puzzle_id")
-    public int puzzleId;
+    public final int puzzleId;
 
     @ColumnInfo(name = "orientation")
     private final int orientation;
